@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delirium MMO</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at 50% 20%, #26345a 0%, #11162b 45%, #070912 100%);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .game {
+      width: 100%;
+      max-width: 900px;
+      min-height: 100vh;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+      font-size: clamp(48px, 12vw, 100px);
+      letter-spacing: 8px;
+      color: #ffffff;
+      text-shadow: 0 0 25px #6578ff;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin: 5px 0 45px;
+      color: #aab4d8;
+      letter-spacing: 4px;
+    }
+
+    .panel {
+      background: rgba(10, 14, 30, 0.82);
+      border: 1px solid #3e4c78;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    button {
+      border: 1px solid #53649c;
+      border-radius: 12px;
+      padding: 18px;
+      background: #151d38;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #26345f;
+      transform: translateY(-2px);
+    }
+
+    button.selected {
+      border-color: #9aa8ff;
+      background: #35457d;
+      box-shadow: 0 0 20px rgba(120,140,255,.3);
+    }
+
+    .classes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .start {
+      width: 100%;
+      margin-top: 25px;
+      background: #4d5fd0;
+      border-color: #8491ff;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .start:hover {
+      background: #6172e8;
+    }
+
+    #result {
+      text-align: center;
+      margin-top: 20px;
+      color: #b9c4ff;
+      min-height: 25px;
+    }
+
+    @media (max-width: 600px) {
+      .choices,
+      .classes {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="game">
+
+    <h1>DELIRIUM</h1>
+    <div class="subtitle">MMO • NOWY ŚWIAT</div>
+
+    <section class="panel">
+
+      <h2>Wybierz rasę</h2>
+
+      <div class="choices">
+        <button onclick="chooseRace('Ludzie', this)">
+          👤<br>
+          <strong>LUDZIE</strong><br>
+          <small>Znani. Ambitni. Niebezpieczni.</small>
+        </button>
+
+        <button onclick="chooseRace('Obcy', this)">
+          👽<br>
+          <strong>OBCY</strong><br>
+          <small>Przybysze z nieznanego świata.</small>
+        </button>
+      </div>
+
+      <h2>Wybierz klasę</h2>
+
+      <div class="classes">
+        <button onclick="chooseClass('Kreator', this)">
+          🧠<br>
+          KREATOR
+        </button>
+
+        <button onclick="chooseClass('Wojownik', this)">
+          ⚔️<br>
+          WOJOWNIK
+        </button>
+
+        <button onclick="chooseClass('Łowca', this)">
+          🎯<br>
+          ŁOWCA
+        </button>
+      </div>
+
+      <button class="start" onclick="startGame()">
+        ROZPOCZNIJ GRĘ
+      </button>
+
+      <div id="result"></div>
+
+    </section>
+
+  </main>
+
+  <script>
+    let selectedRace = null;
+    let selectedClass = null;
+
+    function chooseRace(race, button) {
+      selectedRace = race;
+
+      document.querySelectorAll('.choices button')
+        .forEach(b => b.classList.remove('selected'));
+
+      button.classList.add('selected');
+
+      updateResult();
+    }
+
+    function chooseClass(characterClass, button) {
+      selectedClass = characterClass;
+
+      document.querySelectorAll('.classes button')
+        .forEach(b => b.classList.remove('selected'));
+
+      button.classList.add('selected');
+
+      updateResult();
+    }
+
+    function updateResult() {
+      if (selectedRace && selectedClass) {
+        document.getElementById('result').textContent =
+          'Wybrano: ' + selectedRace + ' — ' + selectedClass;
+      }
+    }
+
+    function startGame() {
+      if (!selectedRace || !selectedClass) {
+        document.getElementById('result').textContent =
+          'Najpierw wybierz rasę i klasę postaci.';
+        return;
+      }
+
+      document.getElementById('result').textContent =
+        'Witaj w Delirium, ' +
+        selectedRace +
+        ' ' +
+        selectedClass +
+        '! Świat wkrótce będzie gotowy.';
+    }
+  </script>
+
+</body>
+</html>
