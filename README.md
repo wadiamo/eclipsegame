@@ -1,2 +1,2 @@
-# deliriumgame
+# EclipseGame
 MMO Game
