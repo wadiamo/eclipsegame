@@ -48,6 +48,8 @@
       letter-spacing: 4px;
     }
 
+    .hidden { display: none !important; }
+
     .panel {
       background: rgba(10, 14, 30, 0.82);
       border: 1px solid #3e4c78;
@@ -109,6 +111,16 @@
       background: #6172e8;
     }
 
+    .base-heading { margin: 0 0 10px; color: #dce2ff; text-align: center; }
+    .welcome { text-align: center; color: #b9c4ff; margin: 0 0 24px; }
+    .resource-grid, .building-grid, .mission-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
+    .resource, .building { padding: 15px; border: 1px solid #3e4c78; border-radius: 12px; background: rgba(21, 29, 56, .8); }
+    .resource strong, .building strong { display: block; margin-bottom: 6px; color: #e1e5ff; }
+    .section-label { margin: 25px 0 10px; color: #aab4d8; }
+    .action-button { width: 100%; font-size: 16px; padding: 14px; }
+    .back-button { width: 100%; margin-top: 18px; font-size: 15px; }
+    #game-message { min-height: 24px; text-align: center; color: #b9c4ff; margin-top: 16px; }
+
     #result {
       text-align: center;
       margin-top: 20px;
@@ -136,7 +148,7 @@
     <h1>DELIRIUM</h1>
     <div class="subtitle">MMO • NOWY ŚWIAT</div>
 
-    <section class="panel">
+    <section class="panel" id="start-screen">
 
       <h2>Wybierz rasę</h2>
 
@@ -181,6 +193,34 @@
 
     </section>
 
+    <section class="panel hidden" id="base-screen" aria-live="polite">
+      <h2 class="base-heading">BAZA GŁÓWNA</h2>
+      <p class="welcome" id="hero-summary"></p>
+      <h3 class="section-label">ZASOBY</h3>
+      <div class="resource-grid">
+        <div class="resource"><strong>🔥 Ogień</strong><span>100</span></div>
+        <div class="resource"><strong>💨 Powietrze</strong><span>100</span></div>
+        <div class="resource"><strong>💧 Woda</strong><span>100</span></div>
+        <div class="resource"><strong>🌍 Ziemia</strong><span>10 · zasób unikalny</span></div>
+      </div>
+      <h3 class="section-label">TWOJE BUDYNKI</h3>
+      <div class="building-grid">
+        <div class="building"><strong>🏛️ Centrum dowodzenia</strong><span>Poziom 1</span></div>
+        <div class="building"><strong>⚒️ Koszary</strong><span>Poziom 1</span></div>
+        <div class="building"><strong>🛡️ Umocnienia</strong><span>Poziom 1</span></div>
+        <div class="building"><strong>🔬 Laboratorium</strong><span>Poziom 1</span></div>
+      </div>
+      <h3 class="section-label">DOSTĘPNE AKCJE</h3>
+      <div class="mission-grid">
+        <button class="action-button" onclick="showGameMessage('Misje bohatera zostaną wkrótce uruchomione.')">🧭 Misje bohatera</button>
+        <button class="action-button" onclick="showGameMessage('Panel armii zostanie wkrótce uruchomiony.')">⚔️ Moja armia</button>
+        <button class="action-button" onclick="showGameMessage('Budowanie zostanie wkrótce uruchomione.')">🏗️ Buduj</button>
+        <button class="action-button" onclick="showGameMessage('Trening zostanie wkrótce uruchomiony.')">🎯 Trenuj</button>
+      </div>
+      <div id="game-message" role="status"></div>
+      <button class="back-button" onclick="returnToSelection()">Zmień postać</button>
+    </section>
+
   </main>
 
   <script>
@@ -223,12 +263,24 @@
         return;
       }
 
-      document.getElementById('result').textContent =
-        'Witaj w Delirium, ' +
-        selectedRace +
-        ' ' +
-        selectedClass +
-        '! Świat wkrótce będzie gotowy.';
+      document.getElementById('hero-summary').textContent =
+        'Bohater: ' + selectedRace + ' — ' + selectedClass;
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('base-screen').classList.remove('hidden');
+      document.getElementById('game-message').textContent =
+        'Witaj w świecie! Twoja przygoda właśnie się zaczyna.';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function returnToSelection() {
+      document.getElementById('base-screen').classList.add('hidden');
+      document.getElementById('start-screen').classList.remove('hidden');
+      document.getElementById('result').textContent = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showGameMessage(message) {
+      document.getElementById('game-message').textContent = message;
     }
   </script>
 
